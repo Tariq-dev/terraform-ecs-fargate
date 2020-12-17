@@ -1,0 +1,37 @@
+module "postgresql_rds" {
+  source = "./terraform-aws-postgresql-rds"
+  vpc_id = "vpc-2e8ad448"
+  rds_security_group = ["sg-71c4b20c"]
+  allocated_storage = "32"
+  max_allocated_storage = "300"
+  engine_version = "12.4"
+  instance_type = "db.t3.medium"
+  storage_type = "gp2"
+  database_identifier = "sp1-postgresql"
+  database_name = "name"
+  database_username = "name"
+  database_password = "password"
+  database_port = "5432"
+  backup_retention_period = "7"
+  backup_window = "03:00-03:30"
+  maintenance_window = "sun:04:30-sun:05:30"
+  auto_minor_version_upgrade = false
+  multi_availability_zone = true
+  storage_encrypted = false
+  subnet_group = "default" #aws_db_subnet_group.default1.id
+  parameter_group = "default.postgres12" #aws_db_parameter_group.default.name
+  monitoring_interval = "60"
+  deletion_protection = false
+  cloudwatch_logs_exports = ["postgresql"]
+
+  alarm_cpu_threshold = "75"
+  alarm_disk_queue_threshold = "10"
+  alarm_free_disk_threshold = "5000000000"
+  alarm_free_memory_threshold = "128000000"
+  alarm_actions = ["arn:aws:sns:us-west-2:921602416417:my-test"]
+  ok_actions = ["arn:aws:sns:us-west-2:921602416417:my-test"]
+  insufficient_data_actions = ["arn:aws:sns:us-west-2:921602416417:my-test"]
+
+  project = "Something"
+  environment = "Staging"
+}
